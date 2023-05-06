@@ -16,12 +16,22 @@ model_summary_lmer <- function(model) {
   std_coef <- parameters::standardize_parameters(model,
                                                  verbose = F)
   
+  std_coef_val <- std_coef[,2]
+  std_coef_ll <- std_coef[,4]
+  std_coef_ul <- std_coef[,5]
+  
   output <- cbind(
     round(summ$coefficients, 3),
-    coef_ci_ll <- round(fixef(model) - (1.96 * mod_se), 3),
-    coef_ci_ul <- round(fixef(model) + (1.96 * mod_se), 3),
-    std_beta <- std_coef
+    coef_ci_ll = round(fixef(model) - (1.96 * mod_se), 3),
+    coef_ci_ul = round(fixef(model) + (1.96 * mod_se), 3),
+    std_beta = std_coef_val,
+    std_beta_ci_ll = std_coef_ll,
+    std_beta_ci_ul = std_coef_ul
   )
+  
+  output <- as.data.frame(output)
+  names(output)[4] <- 'p_value'
+  
   
   return(output)
 }
