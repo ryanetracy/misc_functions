@@ -24,9 +24,9 @@ model_summary_lmer <- function(model) {
     round(summ$coefficients, 3),
     coef_ci_ll = round(fixef(model) - (1.96 * mod_se), 3),
     coef_ci_ul = round(fixef(model) + (1.96 * mod_se), 3),
-    std_beta = std_coef_val,
-    std_beta_ci_ll = std_coef_ll,
-    std_beta_ci_ul = std_coef_ul
+    std_beta = round(std_coef_val, 3),
+    std_beta_ci_ll = round(std_coef_ll, 3),
+    std_beta_ci_ul = round(std_coef_ul, 3)
   )
   
   output <- as.data.frame(output)
