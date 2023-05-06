@@ -30,7 +30,7 @@ model_summary_lmer <- function(model) {
   )
   
   output <- as.data.frame(output)
-  names(output)[4] <- 'p_value'
+  names(output)[5] <- 'p_value'
   
   
   return(output)
@@ -50,7 +50,7 @@ model_summary_glmer <- function(model) {
   )
   
   output <- as.data.frame(output)
-  names(output)[4] <- 'p_value'
+  names(output)[5] <- 'p_value'
   
   return(output)
 }
