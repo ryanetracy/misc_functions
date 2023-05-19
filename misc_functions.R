@@ -10,7 +10,7 @@ package_loader <- function(package_list) {
 }
 
 
-model_summary_lmer <- function(model) {
+model_summary_lmer <- function(model, paired = T) {
   summ <- summary(model)
   mod_se <- sqrt(diag(vcov(model)))
   std_coef <- parameters::standardize_parameters(model,
@@ -20,13 +20,26 @@ model_summary_lmer <- function(model) {
   std_coef_ll <- std_coef[,4]
   std_coef_ul <- std_coef[,5]
   
+  summ_df <- as.data.frame(summ$coefficients)
+  
+  d_val <- effsize::t_to_d(t = summ_df$`t value`,
+                           df = summ_df$df,
+                           paired = paired)
+  
+  est_d <- d_val[,1]
+  est_d_ci_ll <- d_val[,3]
+  est_d_ci_ul <- d_val[,4]
+  
   output <- cbind(
     round(summ$coefficients, 3),
     coef_ci_ll = round(fixef(model) - (1.96 * mod_se), 3),
     coef_ci_ul = round(fixef(model) + (1.96 * mod_se), 3),
     std_beta = round(std_coef_val, 3),
     std_beta_ci_ll = round(std_coef_ll, 3),
-    std_beta_ci_ul = round(std_coef_ul, 3)
+    std_beta_ci_ul = round(std_coef_ul, 3),
+    est_d = round(est_d, 3),
+    est_d_ci_ll = round(est_d_ci_ll, 3),
+    est_d_ci_ul = round(est_d_ci_ul, 3)
   )
   
   output <- as.data.frame(output)
