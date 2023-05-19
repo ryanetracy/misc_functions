@@ -22,9 +22,9 @@ model_summary_lmer <- function(model, paired = T) {
   
   summ_df <- as.data.frame(summ$coefficients)
   
-  d_val <- effsize::t_to_d(t = summ_df$`t value`,
-                           df = summ_df$df,
-                           paired = paired)
+  d_val <- effectsize::t_to_d(t = summ_df$`t value`,
+                              df = summ_df$df,
+                              paired = paired)
   
   est_d <- d_val[,1]
   est_d_ci_ll <- d_val[,3]
