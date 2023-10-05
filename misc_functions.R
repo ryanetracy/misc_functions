@@ -67,3 +67,13 @@ model_summary_glmer <- function(model) {
   
   return(output)
 }
+
+
+get_cohen_d <- function(m1, m2, sd1, sd2) {
+  pooled_sd <- sqrt((sd1 ^ 2 + sd2 ^ 2) / 2)
+  
+  d_val <- (m2 - m1) / pooled_sd
+  
+  return(d_val)
+}
+
