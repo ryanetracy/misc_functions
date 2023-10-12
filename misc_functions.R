@@ -77,3 +77,11 @@ get_cohen_d <- function(m1, m2, sd1, sd2) {
   return(d_val)
 }
 
+
+find_nas <- function(df) {
+  na_df <- as.data.frame(
+    is.na(df)
+  )
+  na_counts <- sapply(na_df, sum)
+  return(na_counts)
+}
