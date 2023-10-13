@@ -1,8 +1,6 @@
 package_loader <- function(package_list) {
   for (p in package_list) {
-    if (
-      !(p %in% installed.packages())
-    ) {
+    if (!(p %in% installed.packages())) {
       install.packages(p)
     }
     lapply(p, library, character.only = T)
@@ -16,9 +14,9 @@ model_summary_lmer <- function(model, paired = T) {
   std_coef <- parameters::standardize_parameters(model,
                                                  verbose = F)
   
-  std_coef_val <- std_coef[,2]
-  std_coef_ll <- std_coef[,4]
-  std_coef_ul <- std_coef[,5]
+  std_coef_val <- std_coef[, 2]
+  std_coef_ll <- std_coef[, 4]
+  std_coef_ul <- std_coef[, 5]
   
   summ_df <- as.data.frame(summ$coefficients)
   
@@ -26,9 +24,9 @@ model_summary_lmer <- function(model, paired = T) {
                               df = summ_df$df,
                               paired = paired)
   
-  est_d <- d_val[,1]
-  est_d_ci_ll <- d_val[,3]
-  est_d_ci_ul <- d_val[,4]
+  est_d <- d_val[, 1]
+  est_d_ci_ll <- d_val[, 3]
+  est_d_ci_ul <- d_val[, 4]
   
   output <- cbind(
     round(summ$coefficients, 3),
@@ -78,10 +76,14 @@ get_cohens_d <- function(m1, m2, sd1, sd2) {
 }
 
 
-find_nas <- function(df) {
-  na_df <- as.data.frame(
-    is.na(df)
-  )
-  na_counts <- sapply(na_df, sum)
-  return(na_counts)
+find_nas <- function(df, by_col = TRUE) {
+  missing_df <- as.data.frame(is.na(df))
+  if (by_col) {
+    cols_missing <- data.frame(n_missing = colSums(missing_df))
+    return(cols_missing)
+  }
+  else {
+    rows_missing <- data.frame(n_missing = rowSums(missing_df))
+    return(rows_missing)
+  }
 }
