@@ -43,6 +43,31 @@ model_summary_lmer <- function(model, paired = T) {
   output <- as.data.frame(output)
   names(output)[5] <- 'p_value'
   
+  output$significance <- ''
+  output$significance[output$p_value <= .10] <- '+'
+  output$significance[output$p_value <= .05] <- '*'
+  output$significance[output$p_value <= .01] <- '**'
+  output$significance[output$p_value <= .001] <- '***'
+  
+  names_vec <- c('coefficient', 'coef_se', 'df', 't_value')
+  names(output)[1:4] <- names_vec
+  
+  output <- output[, c(
+    'coefficient',
+    'coef_se',
+    'df',
+    't_value',
+    'p_value',
+    'significance',
+    'coef_ci_ll',
+    'coef_ci_ul',
+    'std_beta',
+    'std_beta_ci_ll',
+    'std_beta_ci_ul',
+    'est_d',
+    'est_d_ci_ll',
+    'est_d_ci_ul'
+  )]
   
   return(output)
 }
