@@ -86,7 +86,32 @@ model_summary_glmer <- function(model) {
   )
   
   output <- as.data.frame(output)
-  names(output)[5] <- 'p_value'
+  names(output)[4] <- 'p_value'
+  
+  output$significance <- ''
+  output$significance[output$p_value <= .10] <- '+'
+  output$significance[output$p_value <= .05] <- '*'
+  output$significance[output$p_value <= .01] <- '**'
+  output$significance[output$p_value <= .001] <- '***'
+  
+  names_vec <- c(
+    'coefficient',
+    'coef_se',
+    'z_value'
+  )
+
+  names(output)[1:3] <- names_vec
+
+  output <- output[, c(
+    'coefficient',
+    'coef_se',
+    'z_value',
+    'p_value',
+    'significance',
+    'odds_ratio',
+    'OR_ci_ll',
+    'OR_ci_ul'
+  )]
   
   return(output)
 }
